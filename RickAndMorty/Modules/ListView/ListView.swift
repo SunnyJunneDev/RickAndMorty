@@ -12,18 +12,12 @@ class ListView: UIView {
     
     var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.isScrollEnabled = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = Const.backgroundColor
+        tableView.separatorInset = .zero
+        //add request for next page on end of scroll
         return tableView
     }()
-
-//    let titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.numberOfLines = 0
-//        label.font = UIFont.boldSystemFont(ofSize: 14)
-//        label.textColor = .white
-//        label.textAlignment = .center
-//        return label
-//    }()
     
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
@@ -36,9 +30,15 @@ class ListView: UIView {
     }
     
     private func initSubviews() {
-        backgroundColor = .purple
+        backgroundColor = Const.backgroundColor
+        
         addSubview(tableView)
-        tableView.widthToSuperview()
+        tableView.widthToSuperview(multiplier: 0.8)
+        tableView.centerXToSuperview()
         tableView.heightToSuperview()
     }
+}
+
+private enum Const {
+    static let backgroundColor: UIColor = .systemGray6
 }

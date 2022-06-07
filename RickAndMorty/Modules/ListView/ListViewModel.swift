@@ -8,28 +8,45 @@
 import Foundation
 
 protocol ListViewModelProtocol: AnyObject  {
-    var data: [String]? { get }
+    var characters: [Results]? { get }
+    var refreshState: (() -> Void)? { get set }
+    func getData()
+    func selectCharacter(with index: Int)
 }
 
 class ListViewModel: ListViewModelProtocol  {
-    weak var coordinator: Coordinator?
+    weak var coordinator: ListCoordinator?
     weak var viewController: ListViewControllerProtocol?
     var apiManager: APIManagerProtocol
+    var refreshState: (() -> Void)?
     
-    init(viewController: ListViewControllerProtocol, coordinator: Coordinator, apiManager: APIManagerProtocol) {
+    init(viewController: ListViewControllerProtocol, coordinator: ListCoordinator, apiManager: APIManagerProtocol) {
         self.viewController = viewController
         self.coordinator = coordinator
         self.apiManager = apiManager
     }
     
-    var data: [String]? {
-        guard let url = URL(string: Const.urlString) else { return nil}
-        return apiManager.fetchData(for: url)
+    var characters: [Results]?  = []
+    
+    func getData() {
+        guard let url = URL(string: Const.urlString) else { return }
+        apiManager.sendRequest(url: url) { results in // [weak self]
+            self.characters = results
+            DispatchQueue.main.async {
+                self.refreshState?()
+            }
+        }
     }
+    
+    func selectCharacter(with index: Int) {
+        print("Test1 index \(index)")
+        let item = characters?[index]
+        print("Test1 item \(item)")
+        coordinator?.showDetailsScreen() //for item
+    }
+    //when selectCell coordinator?.successfullyLoggedIn()
 }
 
 private enum Const {
-    static let urlString = "https://www.random.org/strings/?num=10&len=8&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new"
-//    static let urlString: String = "https://rickandmortyapi.com/documentation/#get-all-characters"
-//    static let test: String = "https://rickandmortyapi.com/documentation/#get-a-single-character"
+    static let urlString: String = "https://rickandmortyapi.com/api/character"
 }

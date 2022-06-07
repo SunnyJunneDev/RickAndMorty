@@ -24,7 +24,7 @@ final class ListCoordinator: Coordinator {
         navigationController.setViewControllers([listVC], animated: false)
     }
     
-    func successfullyLoggedIn() {
+    func showDetailsScreen() {
         let detailsCoordinator = DetailsCoordinator(navigationController: navigationController)
         childCoordinators.append(detailsCoordinator)
         detailsCoordinator.start()

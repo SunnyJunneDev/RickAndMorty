@@ -17,7 +17,6 @@ final class DetailsCoordinator: Coordinator {
     
     func start() {
         let detailsVC = DetailsViewController()
-//        let apiManager = APIManager()
         let viewModel = DetailsViewModel(viewController: detailsVC, coordinator: self)
         detailsVC.viewModel = viewModel
         navigationController.pushViewController(detailsVC, animated: true)

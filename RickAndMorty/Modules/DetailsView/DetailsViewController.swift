@@ -21,16 +21,21 @@ class DetailsViewController: UIViewController, DetailsViewControllerProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        initialSetup()
-//        setupObservers()
+        initialSetup()
         bindToViewModel()
+        
+        navigationItem.largeTitleDisplayMode = .never
     }
     
-    private func bindToViewModel() {
-//        viewModel.showAlert = { [weak self] message in
-//            guard let self = self else { return }
-//            self.showAlert(with: message)
-//        }
+    private func bindToViewModel() {}
+    
+    private func initialSetup() {
+        contentView.nameTextLabel.text = viewModel.nameText
+        contentView.characterImage.image = viewModel.characterImage
+        contentView.lastLocationTitleLabel.text = viewModel.lastLocationLabel
+        contentView.lastLocationTextLabel.text = viewModel.lastLocationText
+        contentView.firstSeriesTitleLabel.text = viewModel.firstSeriesLabel
+        contentView.firstSeriesTextLabel.text = viewModel.firstSeriesText
     }
 }
 

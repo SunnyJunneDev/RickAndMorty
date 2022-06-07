@@ -5,21 +5,42 @@
 //  Created by Svetlana Shardakova on 06.06.2022.
 //
 
+import Alamofire
 import Foundation
 
 protocol APIManagerProtocol {
-    func fetchData(for url: URL) -> [String]?
+//    func getData(from url: URL, success: @escaping (([Results]) -> Void), fails: @escaping (() -> Void))
+    func sendRequest(url: URL, completion: @escaping(_ characters: [Results]) -> ())
 }
 
-class APIManager:  APIManagerProtocol {
+class APIManager: APIManagerProtocol {
     private var data: Data?
-    func fetchData(for url: URL) -> [String]? {
-        var array: [String]?
-        
-        if let data = try? Data(contentsOf: url),
-           let string = String(data: data, encoding: .ascii) {
-            array = string.components(separatedBy: "\n").dropLast()
+    
+    func sendRequest(url: URL, completion: @escaping(_ characters: [Results]) -> ()) {
+        AF.request(url, method: .get).responseDecodable(of: Character.self) { response in
+            
+            switch response.result {
+            case .success(let characters):
+                
+                var results = [Results]()
+                characters.results?.forEach { elements in
+                    
+                    let character = Results(id: elements.id,
+                                            name: elements.name,
+                                            status: elements.status,
+                                            species: elements.species,
+                                            type: elements.type,
+                                            gender: elements.gender,
+                                            image: elements.image,
+                                            location: elements.location,
+                                            episode: elements.episode)
+                    results.append(character)
+                }
+                completion(results)
+                
+            case .failure(let error):
+                print(error)
+            }
         }
-        return array
     }
 }
