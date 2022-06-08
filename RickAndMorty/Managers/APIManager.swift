@@ -6,10 +6,11 @@
 //
 
 import Alamofire
+import AlamofireImage
 import Foundation
 
 protocol APIManagerProtocol {
-//    func getData(from url: URL, success: @escaping (([Results]) -> Void), fails: @escaping (() -> Void))
+//    process failure to! (from url: URL, success: @escaping (([Results]) -> Void), fails: @escaping (() -> Void))
     func sendRequest(url: URL, completion: @escaping(_ characters: [Results]) -> ())
 }
 
@@ -38,6 +39,17 @@ class APIManager: APIManagerProtocol {
                 }
                 completion(results)
                 
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getImage(_ url: URL, handler: @escaping (UIImage?) -> Void) {
+        AF.request(url, method: .get).responseImage { response in
+            switch response.result {
+            case .success(let img):
+                handler(img)
             case .failure(let error):
                 print(error)
             }

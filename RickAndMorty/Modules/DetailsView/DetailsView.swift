@@ -76,9 +76,10 @@ class DetailsView: UIView {
     private func setupSubviews() {
         backgroundColor = Const.backgroundColor
         
+        // TODO: Convert into StackView
         addSubviews(nameTextLabel, lastLocationTitleLabel, lastLocationTextLabel, firstSeriesTitleLabel, firstSeriesTextLabel, characterImage)
         
-        characterImage.topToSuperview(offset: 50) //TODO: CONST
+        characterImage.topToSuperview(offset: 70) //TODO: CONST
         characterImage.widthToSuperview(multiplier: 0.6)
         characterImage.heightToWidth(of: characterImage)
         characterImage.centerXToSuperview()
@@ -98,14 +99,6 @@ class DetailsView: UIView {
         
         firstSeriesTextLabel.topToBottom(of: firstSeriesTitleLabel, offset: 8)
         firstSeriesTextLabel.widthToSuperview()
-    }
-}
-
-public extension UIView { //TODO: move it to separate file
-    func addSubviews(_ views: UIView...) {
-        for view in views {
-            addSubview(view)
-        }
     }
 }
 

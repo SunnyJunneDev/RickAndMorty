@@ -39,12 +39,8 @@ class ListViewModel: ListViewModelProtocol  {
     }
     
     func selectCharacter(with index: Int) {
-        print("Test1 index \(index)")
-        let item = characters?[index]
-        print("Test1 item \(item)")
-        coordinator?.showDetailsScreen() //for item
+        coordinator?.showDetailsScreen(for: (characters?[index])!) //TODO: get rid of force unwrap
     }
-    //when selectCell coordinator?.successfullyLoggedIn()
 }
 
 private enum Const {

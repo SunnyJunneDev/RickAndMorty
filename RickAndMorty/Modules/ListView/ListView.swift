@@ -33,7 +33,7 @@ class ListView: UIView {
         backgroundColor = Const.backgroundColor
         
         addSubview(tableView)
-        tableView.widthToSuperview(multiplier: 0.8)
+        tableView.widthToSuperview(multiplier: 0.9)
         tableView.centerXToSuperview()
         tableView.heightToSuperview()
     }

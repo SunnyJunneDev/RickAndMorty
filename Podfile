@@ -8,6 +8,7 @@ target 'RickAndMorty' do
   # Pods for RickAndMorty
   pod "TinyConstraints"
   pod 'Alamofire'
+  pod 'AlamofireImage'
 
   target 'RickAndMortyTests' do
     inherit! :search_paths

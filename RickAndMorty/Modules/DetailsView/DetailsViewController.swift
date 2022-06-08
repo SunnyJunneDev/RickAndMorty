@@ -31,7 +31,11 @@ class DetailsViewController: UIViewController, DetailsViewControllerProtocol {
     
     private func initialSetup() {
         contentView.nameTextLabel.text = viewModel.nameText
-        contentView.characterImage.image = viewModel.characterImage
+        
+        viewModel.refreshImage = { [weak self] in
+            self?.contentView.characterImage.image = self?.viewModel.characterImage
+        }
+
         contentView.lastLocationTitleLabel.text = viewModel.lastLocationLabel
         contentView.lastLocationTextLabel.text = viewModel.lastLocationText
         contentView.firstSeriesTitleLabel.text = viewModel.firstSeriesLabel

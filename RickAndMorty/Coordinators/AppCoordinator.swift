@@ -9,7 +9,7 @@ import UIKit
 
 protocol Coordinator: AnyObject{
     var childCoordinators: [Coordinator] { get }
-    func start()
+//    func start()
 }
 
 class AppCoordinator: Coordinator {
@@ -22,8 +22,9 @@ class AppCoordinator: Coordinator {
     
     func start() {
         let navigationController = UINavigationController()
+        let apiManager = APIManager()
         
-        let listCoordinator = ListCoordinator(navigationController: navigationController)
+        let listCoordinator = ListCoordinator(navigationController: navigationController, apiManager: apiManager)
         listCoordinator.start()
         childCoordinators.append(listCoordinator)
         

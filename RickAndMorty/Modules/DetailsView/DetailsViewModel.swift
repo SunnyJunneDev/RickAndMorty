@@ -5,6 +5,7 @@
 //  Created by Svetlana Shardakova on 06.06.2022.
 //
 
+import Alamofire //temp
 import Foundation
 import UIKit
 
@@ -15,14 +16,21 @@ protocol DetailsViewModelProtocol: AnyObject  {
     var firstSeriesLabel: String  { get }
     var firstSeriesText: String { get }
     var characterImage: UIImage  { get }
+    
+    var refreshImage: (() -> Void)? { get set }
 }
 
 class DetailsViewModel: DetailsViewModelProtocol  {
     weak var coordinator: DetailsCoordinator?
     weak var viewController: DetailsViewControllerProtocol?
+    weak var apiManager: APIManager?
+    
+    var refreshImage: (() -> Void)?
+    
+    private var character: Results
 
     var nameText: String {
-        "Rick Long Name" // TODO:
+        character.name ?? "No name"
     }
     
     var lastLocationLabel: String {
@@ -30,7 +38,7 @@ class DetailsViewModel: DetailsViewModelProtocol  {
     }
     
     var lastLocationText: String  {
-        "Mars" // TODO:
+        character.location.name ?? "No location"
     }
     
     var firstSeriesLabel: String {
@@ -38,16 +46,28 @@ class DetailsViewModel: DetailsViewModelProtocol  {
     }
     
     var firstSeriesText: String {
-        "Episode 2" // TODO:
+        guard let episode = character.episode.first?.components(separatedBy: "/").last else { return ""}
+        return "Episode \(episode)"
+    }
+
+    var characterImage = UIImage()
+    
+    func downloadImage() {
+        guard let url = URL(string: character.image ?? "") else { return }
+        apiManager?.getImage(url) { (imageData) in
+            guard let img = imageData else { return }
+            self.characterImage = img
+            self.refreshImage?()
+        }
     }
     
-    var characterImage: UIImage {
-       UIImage.init(named: "rick") ?? UIImage() // TODO: 
-    }
-    
-    init(viewController: DetailsViewControllerProtocol, coordinator: DetailsCoordinator) {
+    init(viewController: DetailsViewControllerProtocol, coordinator: DetailsCoordinator, parameter: Results, apiManager: APIManager) {
         self.viewController = viewController
         self.coordinator = coordinator
+        self.character = parameter
+        self.apiManager = apiManager
+        
+        downloadImage()
     }
 }
 
