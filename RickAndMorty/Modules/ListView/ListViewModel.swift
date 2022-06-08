@@ -30,10 +30,10 @@ class ListViewModel: ListViewModelProtocol  {
     
     func getData() {
         guard let url = URL(string: Const.urlString) else { return }
-        apiManager.sendRequest(url: url) { results in // [weak self]
-            self.characters = results
+        apiManager.sendRequest(url: url) {[weak self] results in //
+            self?.characters = results
             DispatchQueue.main.async {
-                self.refreshState?()
+                self?.refreshState?()
             }
         }
     }

@@ -19,7 +19,6 @@ final class ListCoordinator: Coordinator {
     
     func start() {
         let listVC = ListViewController()
-//        let apiManager = APIManager()
         let viewModel = ListViewModel(viewController: listVC, coordinator: self, apiManager: apiManager)
         listVC.viewModel = viewModel
         viewModel.coordinator = self

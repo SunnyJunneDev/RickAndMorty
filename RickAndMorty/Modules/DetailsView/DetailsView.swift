@@ -13,7 +13,7 @@ class DetailsView: UIView {
     let characterImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 20
+        imageView.layer.cornerRadius = Const.imageCornerRadius
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -21,7 +21,7 @@ class DetailsView: UIView {
     let nameTextLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = .label
         label.textAlignment = .center
         return label
@@ -30,9 +30,9 @@ class DetailsView: UIView {
     let lastLocationTitleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         label.textColor = .secondaryLabel
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -41,16 +41,16 @@ class DetailsView: UIView {
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
     let firstSeriesTitleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         label.textColor = .secondaryLabel
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -59,7 +59,7 @@ class DetailsView: UIView {
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -76,32 +76,40 @@ class DetailsView: UIView {
     private func setupSubviews() {
         backgroundColor = Const.backgroundColor
         
-        // TODO: Convert into StackView
         addSubviews(nameTextLabel, lastLocationTitleLabel, lastLocationTextLabel, firstSeriesTitleLabel, firstSeriesTextLabel, characterImage)
         
-        characterImage.topToSuperview(offset: 70) //TODO: CONST
-        characterImage.widthToSuperview(multiplier: 0.6)
+        characterImage.topToSuperview(offset: Const.imageTopInset)
+        characterImage.widthToSuperview(multiplier: Const.multiplier)
         characterImage.heightToWidth(of: characterImage)
         characterImage.centerXToSuperview()
         
-        
-        nameTextLabel.topToBottom(of: characterImage, offset: 10)
+        nameTextLabel.topToBottom(of: characterImage, offset: Const.titleTopInset)
         nameTextLabel.centerXToSuperview()
         
-        lastLocationTitleLabel.topToBottom(of: nameTextLabel, offset: 20)
-        lastLocationTitleLabel.widthToSuperview()
+        lastLocationTitleLabel.topToBottom(of: nameTextLabel, offset: Const.sectionInset)
+        lastLocationTitleLabel.widthToSuperview(multiplier: Const.multiplier)
+        lastLocationTitleLabel.centerXToSuperview()
         
-        lastLocationTextLabel.topToBottom(of: lastLocationTitleLabel, offset: 8)
-        lastLocationTextLabel.widthToSuperview()
+        lastLocationTextLabel.topToBottom(of: lastLocationTitleLabel, offset: Const.labelTopInset)
+        lastLocationTextLabel.widthToSuperview(multiplier: Const.multiplier)
+        lastLocationTextLabel.centerXToSuperview()
         
-        firstSeriesTitleLabel.topToBottom(of: lastLocationTextLabel, offset: 20)
-        firstSeriesTitleLabel.widthToSuperview()
+        firstSeriesTitleLabel.topToBottom(of: lastLocationTextLabel, offset: Const.sectionInset)
+        firstSeriesTitleLabel.widthToSuperview(multiplier: Const.multiplier)
+        firstSeriesTitleLabel.centerXToSuperview()
         
-        firstSeriesTextLabel.topToBottom(of: firstSeriesTitleLabel, offset: 8)
-        firstSeriesTextLabel.widthToSuperview()
+        firstSeriesTextLabel.topToBottom(of: firstSeriesTitleLabel, offset: Const.labelTopInset)
+        firstSeriesTextLabel.widthToSuperview(multiplier: Const.multiplier)
+        firstSeriesTextLabel.centerXToSuperview()
     }
 }
 
 private enum Const {
+    static let imageCornerRadius: CGFloat = 5
+    static let imageTopInset: CGFloat = 70
+    static let titleTopInset: CGFloat = 12
+    static let labelTopInset: CGFloat = 8
+    static let sectionInset: CGFloat = 20
+    static let multiplier: Double = 0.9
     static let backgroundColor: UIColor = .systemGray6
 }

@@ -9,13 +9,11 @@ import TinyConstraints
 import UIKit
 
 class ListView: UIView {
-    
     var tableView: UITableView = {
         let tableView = UITableView()
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = Const.backgroundColor
         tableView.separatorInset = .zero
-        //add request for next page on end of scroll
         return tableView
     }()
     
@@ -33,7 +31,7 @@ class ListView: UIView {
         backgroundColor = Const.backgroundColor
         
         addSubview(tableView)
-        tableView.widthToSuperview(multiplier: 0.9)
+        tableView.widthToSuperview()
         tableView.centerXToSuperview()
         tableView.heightToSuperview()
     }
@@ -41,4 +39,5 @@ class ListView: UIView {
 
 private enum Const {
     static let backgroundColor: UIColor = .systemGray6
+    static let multiplier: Double = 0.9
 }

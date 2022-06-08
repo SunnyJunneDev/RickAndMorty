@@ -17,12 +17,20 @@ class ListViewController: UIViewController, ListViewControllerProtocol {
         view = contentView
     }
     
+    lazy var refreshControl: UIRefreshControl = {
+        var refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshTableView(sender:)), for: .valueChanged)
+        return refreshControl
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupSubviews()
         bindToViewModel()
         viewModel.getData()
+        
+        contentView.tableView.refreshControl = refreshControl
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.topItem?.title = Const.navigationTitle
@@ -40,6 +48,14 @@ class ListViewController: UIViewController, ListViewControllerProtocol {
         contentView.tableView.delegate = self
         contentView.tableView.register(ListCell.self, forCellReuseIdentifier: Const.cellIdentifier)
     }
+    
+    @objc
+    private func refreshTableView(sender: UIRefreshControl) {
+        viewModel.getData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            sender.endRefreshing()
+        })
+    }
 }
 
 extension ListViewController: UITableViewDataSource, UITableViewDelegate  {
@@ -50,8 +66,15 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Const.cellIdentifier, for: indexPath) as! ListCell
         
-        guard let character = viewModel?.characters?[indexPath.row] else { return UITableViewCell() }
+        guard let characters = viewModel?.characters else { return UITableViewCell() }
+        let character = characters[indexPath.row]
         cell.configureCell(with: character)
+        
+        if indexPath.row == characters.count - 1 {
+            //TODO: load next batch of characters
+            //on start save naxtPageURL, on last cell call self.viewModel.getData for naxtPageURL
+            print("Last cell")
+        }
         
         return cell
     }
@@ -61,7 +84,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate  {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Const.cellHeight // TODO: refactor to dynamic height
+        return Const.cellHeight // TODO: could be refactored to dynamic height calculation
     }
 }
 

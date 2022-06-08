@@ -9,8 +9,9 @@ import Alamofire
 import AlamofireImage
 import Foundation
 
+// TODO: full API Layer implementation could be here with protocols and caching
+
 protocol APIManagerProtocol {
-//    process failure to! (from url: URL, success: @escaping (([Results]) -> Void), fails: @escaping (() -> Void))
     func sendRequest(url: URL, completion: @escaping(_ characters: [Results]) -> ())
 }
 
@@ -25,7 +26,6 @@ class APIManager: APIManagerProtocol {
                 
                 var results = [Results]()
                 characters.results?.forEach { elements in
-                    
                     let character = Results(id: elements.id,
                                             name: elements.name,
                                             status: elements.status,
@@ -40,18 +40,18 @@ class APIManager: APIManagerProtocol {
                 completion(results)
                 
             case .failure(let error):
-                print(error)
+                NSLog("\(error)")
             }
         }
     }
     
-    func getImage(_ url: URL, handler: @escaping (UIImage?) -> Void) {
+    func getImage(_ url: URL, completion: @escaping (UIImage?) -> Void) {
         AF.request(url, method: .get).responseImage { response in
             switch response.result {
             case .success(let img):
-                handler(img)
+                completion(img)
             case .failure(let error):
-                print(error)
+                NSLog("\(error)")
             }
         }
     }
